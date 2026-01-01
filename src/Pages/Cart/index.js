@@ -117,11 +117,21 @@ const Cart = () => {
                             className="d-flex align-items-center text-dark"
                           >
                             <img
-                              src={`${baseUrl}${item.images[0]}`}
-                              alt="Product"
-                              className="img-fluid rounded me-2"
-                              style={{ width: "60px", height: "60px", objectFit: "cover" }}
-                            />
+  src={
+    item.images?.[0]?.startsWith("http")
+      ? item.images[0]
+      : `${baseUrl}${item.images[0]?.startsWith("/") ? "" : "/"}${item.images[0]}`
+  }
+  alt="Product"
+  className="img-fluid rounded me-2"
+  style={{
+    width: "50px",
+    height: "50px",
+    objectFit: "cover",
+    borderRadius: "6px",
+  }}
+/>
+
                             <div>
                               <span className="small fw-bold">{item.productTitle}</span>
                               <div className="d-flex">

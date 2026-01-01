@@ -84,39 +84,45 @@ const ProductDetails = () => {
   }, [id, userId]);
 
   const handleAddToCart = async () => {
-    const localUserId = currentUser?._id || localStorage.getItem("userId");
-    if (!localUserId || localUserId.length !== 24) {
-      setCartError("Please login to add items to your cart.");
-      return;
-    }
-    try {
-      const cartDataToAdd = {
-        productTitle: product.name,
-        images: [product.images[0]],
-        rating: product.rating,
-        price: product.price,
-        quantity,
-        subtotal: product.price * quantity,
-        productId: product._id,
-        userId: localUserId,
-        color: activeColor !== null ? product.productColor[activeColor] : null,
-selectedColorHex:
-  activeColor !== null && product.productColor[activeColor]
-    ? product.productColor[activeColor].hexCode
-    : null,
+  const localUserId = localStorage.getItem("userId"); // Always trust storage
 
-      };
-      console.log('📦 Cart data being sent:', cartDataToAdd);
-      await createCart(cartDataToAdd);
-      console.log('✅ Successfully added to cart');
+  if (!localUserId) {
+    setCartError("⚠ Please login first!");
+    return;
+  }
 
-      setCartError("");
-      context.setCartData(prevCart => [...prevCart, cartDataToAdd]);
-    } catch (error) {
-      console.error('❌ Failed to add to cart:', error);
-      setCartError("Failed to add the product to your cart. Please try again.");
-    }
-  };
+  try {
+    const firstImage =
+      product.images[0].startsWith("http")
+        ? product.images[0]
+        : `${BackendURL}${product.images[0].startsWith("/") ? "" : "/"}${product.images[0]}`;
+
+    const cartDataToAdd = {
+      productTitle: product.name,
+      images: [firstImage],
+      rating: product.rating,
+      price: product.price,
+      quantity,
+      subtotal: product.price * quantity,
+      productId: product._id,
+      userId: localUserId,
+      color: activeColor !== null ? product.productColor[activeColor]?.name : null,
+      selectedColorHex: activeColor !== null ? product.productColor[activeColor]?.hexCode : null,
+    };
+
+    await createCart(cartDataToAdd);
+
+    // 🟢 Force update UI cart count
+    context.setCartData(prev => [...prev, cartDataToAdd]);
+
+    setCartError("");
+    toast.success("🛒 Added to cart!", { autoClose: 1200 });
+  } catch (error) {
+    console.error("Add Cart Error:", error);
+    toast.error("Failed to add to cart!");
+  }
+};
+
 
   const handleReviewSubmit = async () => {
     if (!newReview.comment || newReview.rating === 0) {

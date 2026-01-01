@@ -194,7 +194,7 @@ const Home = () => {
                             {/* Electronics Products */}
                             <div className="d-flex align-items-center mt-5">
                                 <div className="info w-75">
-                                    <h3 className="mb-0 hd">ELECTRONICS</h3>
+                                    <h3 className="mb-0 hd">Leggings</h3>
                                     <p className="text-light text-sml mb-0">
                                         Do not miss the current offers until the end of December
                                     </p>

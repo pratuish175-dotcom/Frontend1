@@ -27,25 +27,25 @@ const HomeBanner = () => {
             <SwiperSlide>
         
             <div className="item">
-                <img src="https://cmsimages.shoppersstop.com/static_web_Adidas_puma_and_more_fab67b1371/static_web_Adidas_puma_and_more_fab67b1371.png" className="w-100"/>
+                <img src="https://gocolors.com/cdn/shop/files/Jan_1_Eoss_D.jpg?v=1767241771" className="w-100"/>
 
             </div>
             </SwiperSlide>
             <SwiperSlide>
                 <div className="item">
-                    <img src="https://res.cloudinary.com/dkgonwhvj/image/upload/v1731427470/1731427468095_New_Project_13.jpg" className="w-100" />
+                    <img src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771" className="w-100" />
 
                 </div>
             </SwiperSlide>
             <SwiperSlide>
                 <div className="item">
-                    <img src="https://res.cloudinary.com/dkgonwhvj/image/upload/v1731427548/1731427544379_New_Project_6.jpg" className="w-100" />
+                    <img src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771" className="w-100" />
 
                 </div>
             </SwiperSlide>
             <SwiperSlide>
                 <div className="item">
-                    <img src="https://res.cloudinary.com/dkgonwhvj/image/upload/v1731427522/1731427519864_New_Project_11.jpg" className="w-100" />
+                    <img src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771" className="w-100" />
 
                 </div>
             </SwiperSlide>

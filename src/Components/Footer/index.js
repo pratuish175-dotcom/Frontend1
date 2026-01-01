@@ -1,134 +1,68 @@
 import React from 'react'
-import { FaFacebookF, FaTwitter } from 'react-icons/fa'
-import { FaInstagram } from 'react-icons/fa6'
-import { LuShirt } from 'react-icons/lu'
-import { TbDiscount, TbTruckDelivery } from 'react-icons/tb'
-import { Link } from 'react-router-dom'
+import { FaFacebookF, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { Link } from "react-router-dom"
+
 
 const Footer = () => {
   return (
-    <footer>
-        <div className='container'>
-            <div className='topInfo row'>
-                <div className='col d-flex align-items-center'>
-                <span><LuShirt/></span>
-                <span className='ml-2'>Everyday fresh products</span>
+    <footer className="footer-section mt-5">
+      <div className="container">
 
+        {/* Footer Top */}
+        <div className="row footer-top">
 
-                </div>
-                <div className='col d-flex align-items-center'>
-                    <span><TbTruckDelivery/></span>
-                    <span className='ml-2'>Free delivery for order over $70</span>
+          <div className="col-lg-3 col-md-6">
+            <h4 className="footer-title">Contact Us</h4>
+            <p className="footer-text">📞 +91 9915074434</p>
+            <p className="footer-text">✉ support@fashionstore.com</p>
+            <p className="footer-text">📍 Himachal, India</p>
 
-                </div>
-                <div className='col d-flex align-items-center'>
-                    <span><TbDiscount/></span>
-                    <span className='ml-2'>Daily Mega Discounts</span>
-
-                </div>
-
+            <div className="footer-social-icons mt-3">
+              <a href="#"><FaFacebookF /></a>
+              <a href="#"><FaInstagram /></a>
+              <a href="#"><FaTwitter /></a>
             </div>
-            <div className='row mt-4 linksWrap'>
-                <div className='col'>
-                    <h5>FRUIT & VEGETABLES</h5>
-                    <ul>
-                        <li><Link to="#">Fresh Vegetables</Link></li>
-                        <li><Link to="#">Herbs & Seasonings</Link></li>
-                        <li><Link to="#">Fresh Fruits</Link></li>
-                        <li><Link to="#">Cuts & Sprouts</Link></li>
-                        <li><Link to="#">Exotic Fruits & Veggies</Link></li>
-                        <li><Link to="#">Packaged Product</Link></li>
-                        <li><Link to="#">Party Tray</Link></li>
-                        
-                    </ul>
+          </div>
 
-                </div>
-                <div className='col'>
-                    <h5>FRUIT & VEGETABLES</h5>
-                    <ul>
-                        <li><Link to="#">Fresh Vegetables</Link></li>
-                        <li><Link to="#">Herbs & Seasonings</Link></li>
-                        <li><Link to="#">Fresh Fruits</Link></li>
-                        <li><Link to="#">Cuts & Sprouts</Link></li>
-                        <li><Link to="#">Exotic Fruits & Veggies</Link></li>
-                        <li><Link to="#">Packaged Product</Link></li>
-                        <li><Link to="#">Party Tray</Link></li>
-                        
-                    </ul>
+          <div className="col-lg-3 col-md-6">
+            <h4 className="footer-title">Shop</h4>
+            <ul className="footer-links">
+              <li><Link to="#">Leggings</Link></li>
+              <li><Link to="#">Jeggings</Link></li>
+              <li><Link to="#">Sports Wear</Link></li>
+              <li><Link to="#">Tops & Tees</Link></li>
+              <li><Link to="#">Accessories</Link></li>
+            </ul>
+          </div>
 
-                </div>
-                <div className='col'>
-                    <h5>FRUIT & VEGETABLES</h5>
-                    <ul>
-                        <li><Link to="#">Fresh Vegetables</Link></li>
-                        <li><Link to="#">Herbs & Seasonings</Link></li>
-                        <li><Link to="#">Fresh Fruits</Link></li>
-                        <li><Link to="#">Cuts & Sprouts</Link></li>
-                        <li><Link to="#">Exotic Fruits & Veggies</Link></li>
-                        <li><Link to="#">Packaged Product</Link></li>
-                        <li><Link to="#">Party Tray</Link></li>
-                        
-                    </ul>
+          <div className="col-lg-3 col-md-6">
+            <h4 className="footer-title">Customer Service</h4>
+            <ul className="footer-links">
+              <li><Link to="#">Track Order</Link></li>
+              <li><Link to="#">Returns</Link></li>
+              <li><Link to="#">Shipping Policy</Link></li>
+              <li><Link to="#">Privacy Policy</Link></li>
+              <li><Link to="#">Contact Support</Link></li>
+            </ul>
+          </div>
 
-                </div>
-                <div className='col'>
-                    <h5>FRUIT & VEGETABLES</h5>
-                    <ul>
-                        <li><Link to="#">Fresh Vegetables</Link></li>
-                        <li><Link to="#">Herbs & Seasonings</Link></li>
-                        <li><Link to="#">Fresh Fruits</Link></li>
-                        <li><Link to="#">Cuts & Sprouts</Link></li>
-                        <li><Link to="#">Exotic Fruits & Veggies</Link></li>
-                        <li><Link to="#">Packaged Product</Link></li>
-                        <li><Link to="#">Party Tray</Link></li>
-                        
-                    </ul>
-
-                </div>
-                <div className='col'>
-                    <h5>FRUIT & VEGETABLES</h5>
-                    <ul>
-                        <li><Link to="#">Fresh Vegetables</Link></li>
-                        <li><Link to="#">Herbs & Seasonings</Link></li>
-                        <li><Link to="#">Fresh Fruits</Link></li>
-                        <li><Link to="#">Cuts & Sprouts</Link></li>
-                        <li><Link to="#">Exotic Fruits & Veggies</Link></li>
-                        <li><Link to="#">Packaged Product</Link></li>
-                        <li><Link to="#">Party Tray</Link></li>
-                        
-                    </ul>
-
-                </div>
-               
-
-
-
-
-
-
-            </div>
-            <div className='copyright mt-3 pt-3 pb-3 d-flex'>
-                <p>Copyrigt 2024. All rights reserved.</p>
-                <ul className='list list-inline ml-auto mb-0'>
-                    <li className='list-inline-item'>
-                        <Link to ="#"><FaFacebookF/></Link>
-
-                    </li>
-                    <li className='list-inline-item'>
-                        <Link to ="#"><FaInstagram/></Link>
-
-                    </li>
-                    <li className='list-inline-item'>
-                        <Link to ="#"><FaTwitter/></Link>
-
-                    </li>
-                    
-                    
-                </ul>
-
-            </div>
+          <div className="col-lg-3 col-md-6">
+            <h4 className="footer-title">Newsletter</h4>
+            <p className="footer-text">Subscribe to get special offers & updates.</p>
+            <form className="newsletter-form">
+              <input type="email" placeholder="Enter your email" />
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
 
         </div>
+
+        {/* Footer Bottom */}
+        <div className="footer-bottom mt-4">
+          <p>© 2024 Fashion Store. All rights reserved.</p>
+        </div>
+
+      </div>
     </footer>
   )
 }
