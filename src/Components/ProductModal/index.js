@@ -20,8 +20,18 @@ const ProductModal = ({ data: product, closeProductModal }) => {
 
   if (!product) return null;
 
-  const backendUrl = "http://localhost:8080";
-  const images = product?.images?.map(img => img.startsWith("http") ? img : `${backendUrl}${img}`) || [];
+  const BackendURL = process.env.REACT_APP_API_BASE_URL;
+
+const images = (product?.images || []).map((img) => {
+  if (!img) return "";
+
+  if (img.startsWith("http")) return img;
+
+  if (img.startsWith("/uploads")) return `${BackendURL}${img}`;
+
+  return `${BackendURL}/uploads/${img}`;
+});
+
 
   const choices = (arr) => Array.isArray(arr) ? arr : JSON.parse(arr || "[]");
   const rams = choices(product.productRAMS);

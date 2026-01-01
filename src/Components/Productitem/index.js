@@ -24,11 +24,19 @@ const ProductItem = (props) => {
     });
   };
 
-  const backendUrl = "http://localhost:8080";
-  const productImages =
-    props.item?.images?.length > 0
-      ? props.item.images.map((image) => `${backendUrl}${image}`)
-      : ["/default-image.jpg"];
+  const backendUrl = process.env.REACT_APP_API_BASE_URL;
+
+    const productImages =
+  props.item?.images?.length > 0
+    ? props.item.images.map((img) =>
+        img.startsWith("http")
+          ? img
+          : `${backendUrl}/${img.replace(/^\/+/, "")}`
+      )
+    : ["/default-image.jpg"];
+    const discount = props.item?.discount || 0;
+const showDiscountBadge = discount > 0;
+
 
   return (
     <div
@@ -73,7 +81,12 @@ const ProductItem = (props) => {
           )}
         </Link>
 
-        <span className="badge badge-primary">27%</span>
+       {showDiscountBadge && (
+  <span className="badge badge-primary">
+    {discount}% OFF
+  </span>
+)}
+
 
         {/* Action Buttons */}
         <div className="actions">

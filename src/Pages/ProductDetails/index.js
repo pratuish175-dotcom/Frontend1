@@ -20,6 +20,8 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 
 
 const ProductDetails = () => {
+  const BackendURL = process.env.REACT_APP_API_BASE_URL;
+
   const { username, userId, currentUser } = useContext(MyContext);
   const context = useContext(MyContext);
   const { id } = useParams();
@@ -219,11 +221,20 @@ const colors = Array.isArray(product.productColor)
         <div className="container">
           <div className="row">
             <div className="col-md-5">
-              <ProductZoom
-                images={(product.images || []).map((img) =>
-                  img.startsWith("http") ? img : `http://localhost:8080${img}`)}
-                discount={product.discount > 0 ? product.discount : null}
-              />
+             <ProductZoom
+  images={(product.images || []).map((img) =>
+    img
+      ? img.startsWith("http")
+        ? img
+        : `${BackendURL}${img.startsWith("/") ? "" : "/"}${img}`
+      : ""
+  )}
+  discount={product.discount > 0 ? product.discount : null}
+/>
+
+
+
+
             </div>
             <div className="col-md-7">
               <h2>{product.name}</h2>
