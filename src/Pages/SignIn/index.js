@@ -20,45 +20,50 @@ const SignIn = () => {
     return () => context.setisHeaderFooterShow(true);
   }, [context]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    let validationErrors = {};
-    if (!email) validationErrors.email = "Email is required";
-    if (!password) validationErrors.password = "Password is required";
-  
-    setErrors(validationErrors);
-  
-    if (Object.keys(validationErrors).length === 0) {
-      try {
-        const response = await fetch("http://localhost:8080/api/user/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, password }),
-        });
-  
-        const data = await response.json();
-        if (!response.ok) {
-          return alert(data.message || "Login failed");
-        }
-  
-        // ✅ Save all needed data
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("username", data.user.name);
-        localStorage.setItem("userId", data.user.id); // ✅ Important
-  
-        context.setIsLogin(true);
-        context.setUsername(data.user.name);
-        context.setisHeaderFooterShow(true);
-  
-        navigate("/");
-      } catch (err) {
-        console.error("Login error:", err);
+  const API_URL = process.env.REACT_APP_API_BASE_URL;
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  let validationErrors = {};
+  if (!email) validationErrors.email = "Email is required";
+  if (!password) validationErrors.password = "Password is required";
+
+  setErrors(validationErrors);
+
+  if (Object.keys(validationErrors).length === 0) {
+    try {
+      const response = await fetch(`${API_URL}/api/user/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return alert(data.message || "Login failed");
       }
+
+      // Save user data
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("username", data.user.name);
+      localStorage.setItem("userId", data.user._id);
+
+      context.setIsLogin(true);
+      context.setUsername(data.user.name);
+      context.setisHeaderFooterShow(true);
+
+      navigate("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Network error. Check backend server.");
     }
-  };
+  }
+};
+
   return (
     <section className="signInPage">
       <div className="signInBox">
