@@ -98,45 +98,49 @@ const handleAddToCart = async () => {
     return;
   }
 
-  // 👉 continue add-to-cart logic here
-
-
   try {
     const firstImage = product.images[0];
 
-// ✅ ALWAYS store RELATIVE PATH in DB
-const imagePath = firstImage.startsWith("/uploads")
-  ? firstImage
-  : `/uploads/${firstImage}`;
+    // ✅ ALWAYS store RELATIVE PATH in DB
+    const imagePath = firstImage.startsWith("/uploads")
+      ? firstImage
+      : `/uploads/${firstImage}`;
 
-const cartDataToAdd = {
-  productTitle: product.name,
-  images: [imagePath], // ✅ FIX
-  rating: product.rating,
-  price: product.price,
-  quantity,
-  subtotal: product.price * quantity,
-  productId: product._id,
-  userId: localUserId,
+    const cartDataToAdd = {
+      productTitle: product.name,
+      images: [imagePath],
+      rating: product.rating,
+      price: product.price,
+      quantity,
+      subtotal: product.price * quantity,
+      productId: product._id,
+      userId: userId, // ✅ FIXED HERE
 
+      color:
+        activeColor !== null
+          ? product.productColor?.[activeColor]?.name
+          : null,
 
-      color: activeColor !== null ? product.productColor?.[activeColor]?.name : null,
-      selectedColorHex: activeColor !== null ? product.productColor?.[activeColor]?.hexCode : null,
+      selectedColorHex:
+        activeColor !== null
+          ? product.productColor?.[activeColor]?.hexCode
+          : null,
     };
 
     await createCart(cartDataToAdd);
 
     toast.success("🛒 Added to Cart!", { autoClose: 1000 });
 
-    // Update UI instantly
-    context.setCartData(prev => [...prev, cartDataToAdd]);
-    setCartError("");
+    // ✅ Update header cart instantly
+    context.setCartData((prev) => [...prev, cartDataToAdd]);
 
+    setCartError("");
   } catch (error) {
     console.error("Add Cart Error:", error);
     toast.error("Failed to add to cart!");
   }
 };
+
 
 
 
