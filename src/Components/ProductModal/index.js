@@ -31,13 +31,24 @@ const ProductModal = ({ data: product, closeProductModal }) => {
   const sizes = choices(product.productSize);
   const weights = choices(product.productWeight);
 
-  const handleAddToCart = async () => {
-    const userId = context.userId || localStorage.getItem("userId");
+   const handleAddToCart = async () => {
+  const userId =
+    context.currentUser?._id ||
+    localStorage.getItem("userId");
 
-    if (!userId || userId.length !== 24) {
-      setCartError("Please login to add items to your cart.");
-      return;
-    }
+  // ✅ VALIDATION
+  if (
+    !userId ||
+    userId === "undefined" ||
+    userId.length !== 24
+  ) {
+    toast.error("Please login to add items to cart");
+    return;
+  }
+
+  // 👉 continue add-to-cart logic here
+
+
 
     const cartData = {
       productTitle: product.name,

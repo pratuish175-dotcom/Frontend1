@@ -83,12 +83,23 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id, userId]);
 
- const handleAddToCart = async () => {
-  const localUserId = localStorage.getItem("userId");
-  if (!localUserId) {
-    setCartError("⚠ Please login first!");
+const handleAddToCart = async () => {
+  const userId =
+    context.currentUser?._id ||
+    localStorage.getItem("userId");
+
+  // ✅ VALIDATION
+  if (
+    !userId ||
+    userId === "undefined" ||
+    userId.length !== 24
+  ) {
+    toast.error("Please login to add items to cart");
     return;
   }
+
+  // 👉 continue add-to-cart logic here
+
 
   try {
     const firstImage = product.images[0];
