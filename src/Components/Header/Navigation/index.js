@@ -1,72 +1,63 @@
-import Button from '@mui/material/Button';
-import { IoIosMenu } from 'react-icons/io';
-import { FaAngleDown, FaAngleRight } from 'react-icons/fa6';
-import { Link } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import Button from "@mui/material/Button";
+import { IoIosMenu } from "react-icons/io";
+import { FaAngleDown, FaAngleRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
 import { MyContext } from "../../../App";
 
 const Navigation = () => {
   const { subCategoryData } = useContext(MyContext);
-  const [isopenSidebarVal, setisopenSidebarVal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav>
-      <div className='container'>
-        <div className='row'>
-          {/* Sidebar Part */}
-          <div className='col-sm-2 navPart1'>
-            <div className='catWrapper'>
-              <Button 
-                className='allCatTab align-items-center' 
-                onClick={() => setisopenSidebarVal(!isopenSidebarVal)}
-              >
-                <span className='icon1 mr-2'><IoIosMenu /></span>
-                <span className='text'>ALL CATEGORIES</span>
-                <span className='icon2 ml-2'><FaAngleDown /></span>
-              </Button>
+    <nav className="premium-nav">
+      <div className="container">
+        <div className="row align-items-center">
 
-              {/* Sidebar List */}
-              <div className={`sidebarNav ${isopenSidebarVal ? 'open' : ''}`}>
-                <ul>
-                  {subCategoryData && subCategoryData.length > 0 ? (
-                    subCategoryData.map((item) => (
-                      <li key={item._id}>
-                        <Link to={`/cate/${item._id}`}>
-                          <Button>
-                            {item.name}
-                            <FaAngleRight className="ml-auto" />
-                          </Button>
-                        </Link>
-                      </li>
-                    ))
-                  ) : (
-                    <li>Loading categories...</li>
-                  )}
-                </ul>
-              </div>
+          {/* LEFT – CATEGORY BUTTON */}
+          <div className="col-md-3 nav-left">
+            <Button
+              className={`allCatBtn ${isOpen ? "active" : ""}`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <IoIosMenu className="icon" />
+              <span>All Categories</span>
+              <FaAngleDown className={`arrow ${isOpen ? "rotate" : ""}`} />
+            </Button>
+
+            {/* SIDEBAR */}
+            <div className={`category-sidebar ${isOpen ? "show" : ""}`}>
+              <ul>
+                {subCategoryData?.map((item) => (
+                  <li key={item._id}>
+                    <Link to={`/cate/${item._id}`} onClick={() => setIsOpen(false)}>
+                      <span>{item.name}</span>
+                      <FaAngleRight />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
-          {/* Top Navigation Part */}
-          <div className='col-sm-9 navPart2 d-flex align-items-center'>
-            <ul className='list list-inline ml-auto'>
-              <li className='list-inline-item'>
-                <Link to="/">
-                  <Button>Home</Button>
-                </Link>
-              </li>
+          {/* RIGHT – MAIN NAV */}
+          <div className="col-md-9 nav-right">
+            <ul className="nav-links">
+              <li><Link to="/">Home</Link></li>
 
-              {subCategoryData && subCategoryData.length > 0 && (
-                subCategoryData.map((item) => (
-                  <li className='list-inline-item' key={item._id}>
-                    <Link to={`/cate/${item._id}`}>
-                      <Button>{item.name}</Button>
-                    </Link>
-                  </li>
-                ))
-              )}
+              {subCategoryData?.map((item) => (
+                <li key={item._id}>
+                  <Link to={`/cate/${item._id}`}>{item.name}</Link>
+                </li>
+              ))}
+
+              {/* SUPER SAVER */}
+              <li className="super-saver">
+                <Link to="/deals">🔥 Super Saver</Link>
+              </li>
             </ul>
           </div>
+
         </div>
       </div>
     </nav>

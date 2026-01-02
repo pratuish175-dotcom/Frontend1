@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import { Rating } from '@mui/material';
-import { MdClose, MdOutlineCompareArrows } from "react-icons/md";
-import { IoIosHeartEmpty } from "react-icons/io";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import { Rating } from "@mui/material";
+import { MdClose } from "react-icons/md";
+import { toast } from "react-toastify";
 
-import QuantityBox from '../QuantityBox';
-import ProductZoom from '../ProductZoom';
+import QuantityBox from "../QuantityBox";
+import ProductZoom from "../ProductZoom";
 import { MyContext } from "../../App";
 import { createCart } from "../../utils/api";
 
 const ProductModal = ({ data: product, closeProductModal }) => {
-  const { currentUser } = useContext(MyContext);
+  const context = useContext(MyContext);
   const [quantity, setQuantity] = useState(1);
   const [activeRam, setActiveRam] = useState(null);
   const [activeSize, setActiveSize] = useState(null);
@@ -22,33 +22,22 @@ const ProductModal = ({ data: product, closeProductModal }) => {
 
   const BackendURL = process.env.REACT_APP_API_BASE_URL;
 
-const images = (product?.images || []).map((img) => {
-  if (!img) return "";
+  const images = (product?.images || []).map((img) =>
+    img?.startsWith("http") ? img : `${BackendURL}${img}`
+  );
 
-  if (img.startsWith("http")) return img;
-
-  if (img.startsWith("/uploads")) return `${BackendURL}${img}`;
-
-  return `${BackendURL}/uploads/${img}`;
-});
-
-
-  const choices = (arr) => Array.isArray(arr) ? arr : JSON.parse(arr || "[]");
+  const choices = (arr) => (Array.isArray(arr) ? arr : JSON.parse(arr || "[]"));
   const rams = choices(product.productRAMS);
   const sizes = choices(product.productSize);
   const weights = choices(product.productWeight);
 
   const handleAddToCart = async () => {
-    const userId = currentUser?._id || localStorage.getItem("userId");
+    const userId = context.userId || localStorage.getItem("userId");
 
     if (!userId || userId.length !== 24) {
       setCartError("Please login to add items to your cart.");
       return;
     }
-
-    const selectedRam = rams[activeRam] || "";
-    const selectedSize = sizes[activeSize] || "";
-    const selectedWeight = weights[activeWeight] || "";
 
     const cartData = {
       productTitle: product.name,
@@ -59,65 +48,81 @@ const images = (product?.images || []).map((img) => {
       subtotal: product.price * quantity,
       productId: product._id,
       userId,
-      ram: selectedRam,
-      size: selectedSize,
-      weight: selectedWeight,
+      ram: rams[activeRam] || "",
+      size: sizes[activeSize] || "",
+      weight: weights[activeWeight] || "",
     };
 
     try {
       await createCart(cartData);
-      console.log("✅ Product added to cart:", cartData);
+
+      // ✅ UPDATE HEADER CART COUNT
+      context.setCartData((prev) => [...prev, cartData]);
+
+      // ✅ SUCCESS MESSAGE
+      toast.success("Item added to cart 🛒", {
+        autoClose: 1200,
+      });
+
       closeProductModal();
     } catch (err) {
-      console.error("❌ Failed to add to cart:", err);
-      setCartError("Something went wrong while adding to cart.");
+      console.error(err);
+      setCartError("Failed to add item to cart.");
     }
   };
 
   return (
-    <Dialog open={true} className="productModal" onClose={closeProductModal}>
+    <Dialog open onClose={closeProductModal} className="productModal">
       <Button className="close_" onClick={closeProductModal}>
         <MdClose />
       </Button>
 
-      <h4 className="mb-1 font-weight-bold">{product.name}</h4>
+      <h4 className="mb-1 fw-bold">{product.name}</h4>
 
       <div className="d-flex align-items-center">
-        <div className="d-flex align-items-center mr-4">
-          <span>Brand:</span>
-          <span className="ml-2"><b>{product.brand}</b></span>
-        </div>
-        <Rating name="product-rating" value={product.rating || 0} size="small" precision={0.5} readOnly />
+        <span className="me-3">
+          Brand: <b>{product.brand}</b>
+        </span>
+        <Rating value={product.rating || 0} size="small" readOnly />
       </div>
 
       <hr />
 
-      <div className="row mt-2 productDetailModal">
+      <div className="row productDetailModal">
         <div className="col-md-5">
           <ProductZoom images={images} discount={product.discount} />
         </div>
+
         <div className="col-md-7">
-          <div className="d-flex info align-items-center mb-3">
+          <div className="d-flex align-items-center mb-3">
             {product.oldPrice && (
-              <span className="oldPrice lg mr-2">Rs {product.oldPrice}</span>
+              <span className="oldPrice me-2">Rs {product.oldPrice}</span>
             )}
-            <span className="netPrice text-danger lg">Rs {product.price}</span>
+            <span className="netPrice text-danger">
+              Rs {product.price}
+            </span>
           </div>
 
-          <span className={`badge ${product.countInStock > 0 ? "bg-success" : "bg-danger"}`}>
+          <span
+            className={`badge ${
+              product.countInStock > 0 ? "bg-success" : "bg-danger"
+            }`}
+          >
             {product.countInStock > 0 ? "IN STOCK" : "OUT OF STOCK"}
           </span>
 
-          <p className="mt-3">{product.description || "No description available."}</p>
+          <p className="mt-3">{product.description}</p>
 
-          {/* Variant Options */}
+          {/* VARIANTS */}
           {rams.length > 0 && (
-            <div className="productSize d-flex align-items-center mt-2">
-              <span className="mr-2">RAM:</span>
+            <div className="mt-2">
+              <span className="me-2">RAM:</span>
               {rams.map((ram, i) => (
                 <button
                   key={i}
-                  className={`btn btn-sm ${activeRam === i ? "btn-dark" : "btn-outline-secondary"} mr-2`}
+                  className={`btn btn-sm ${
+                    activeRam === i ? "btn-dark" : "btn-outline-secondary"
+                  } me-2`}
                   onClick={() => setActiveRam(i)}
                 >
                   {ram}
@@ -125,13 +130,16 @@ const images = (product?.images || []).map((img) => {
               ))}
             </div>
           )}
+
           {sizes.length > 0 && (
-            <div className="productSize d-flex align-items-center mt-2">
-              <span className="mr-2">Size:</span>
+            <div className="mt-2">
+              <span className="me-2">Size:</span>
               {sizes.map((sz, i) => (
                 <button
                   key={i}
-                  className={`btn btn-sm ${activeSize === i ? "btn-dark" : "btn-outline-secondary"} mr-2`}
+                  className={`btn btn-sm ${
+                    activeSize === i ? "btn-dark" : "btn-outline-secondary"
+                  } me-2`}
                   onClick={() => setActiveSize(i)}
                 >
                   {sz}
@@ -139,13 +147,16 @@ const images = (product?.images || []).map((img) => {
               ))}
             </div>
           )}
+
           {weights.length > 0 && (
-            <div className="productSize d-flex align-items-center mt-2">
-              <span className="mr-2">Weight:</span>
+            <div className="mt-2">
+              <span className="me-2">Weight:</span>
               {weights.map((w, i) => (
                 <button
                   key={i}
-                  className={`btn btn-sm ${activeWeight === i ? "btn-dark" : "btn-outline-secondary"} mr-2`}
+                  className={`btn btn-sm ${
+                    activeWeight === i ? "btn-dark" : "btn-outline-secondary"
+                  } me-2`}
                   onClick={() => setActiveWeight(i)}
                 >
                   {w}
@@ -154,28 +165,19 @@ const images = (product?.images || []).map((img) => {
             </div>
           )}
 
-          {/* Quantity + Add to Cart */}
-          <div className="d-flex align-items-center mt-3">
+          {/* ADD TO CART */}
+          <div className="d-flex align-items-center mt-4">
             <QuantityBox quantity={quantity} setQuantity={setQuantity} />
             <Button
-              className="btn-blue btn-lg btn-round ml-3"
+              className="btn-blue btn-lg btn-round ms-3"
               onClick={handleAddToCart}
               disabled={product.countInStock === 0}
             >
               Add to Cart
             </Button>
           </div>
-          {cartError && <div className="text-danger mt-2">{cartError}</div>}
 
-          {/* Wishlist + Compare */}
-          <div className="d-flex align-items-center mt-4 actions">
-            <Button className="btn-round btn-sml" variant="outlined">
-              <IoIosHeartEmpty /> &nbsp; ADD TO WISHLIST
-            </Button>
-            <Button className="btn-round btn-sml ml-3" variant="outlined">
-              <MdOutlineCompareArrows /> &nbsp; COMPARE
-            </Button>
-          </div>
+          {cartError && <div className="text-danger mt-2">{cartError}</div>}
         </div>
       </div>
     </Dialog>

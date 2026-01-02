@@ -24,19 +24,8 @@ const HomeBanner = () => {
          modules={[Navigation,Autoplay]}
           className="mySwiper"
            >
-            <SwiperSlide>
-        
-            <div className="item">
-                <img src="https://gocolors.com/cdn/shop/files/Jan_1_Eoss_D.jpg?v=1767241771" className="w-100"/>
-
-            </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className="item">
-                    <img src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771" className="w-100" />
-
-                </div>
-            </SwiperSlide>
+            
+            
             <SwiperSlide>
                 <div className="item">
                     <img src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771" className="w-100" />

@@ -8,7 +8,6 @@ import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
 import Productitem from "../../Components/Productitem";
 import HomeCat from "../../Components/HomeCat";
-import newsLetter from "../../assets/images/newsLetter.png";
 import banner4 from '../../assets/images/banner4.jpg';
 import { IoMailOutline } from "react-icons/io5";
 import Footer from "../../Components/Footer";
@@ -231,28 +230,7 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Newsletter Section */}
-            <section className="newsLetterSection mt-3 mb-3 d-flex align-items-center">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-6">
-                            <p className="text-white mb-1">$20 discount for your first order</p>
-                            <h3 className="text-white">Join our newsletter and get...</h3>
-                            <p className="text-light">
-                                Join our email subscription now to get updates on <br /> promotion and coupons
-                            </p>
-                            <form>
-                                <IoMailOutline />
-                                <input type="email" placeholder="Your Email Address" />
-                                <Button>Subscribe</Button>
-                            </form>
-                        </div>
-                        <div className="col-md-6">
-                            <img src={newsLetter} alt="Newsletter" />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
 
             <Footer />
         </div>

@@ -22,6 +22,9 @@ import Wishlist from "./Pages/Wishlist";
 import OrderSuccess from "./Pages/OrderSuccess";
 import MyOrders from "./Pages/MyOrders";
 import OrderTracking from "./Pages/OrderTracking";
+import FunBackground from "./Components/FunBackground";
+import WhatsAppChat from "./Components/WhatsAppChat";
+
 
 
 const MyContext = createContext();
@@ -138,6 +141,8 @@ const removeFromWishlist = (id) => {
 
   return (
     <BrowserRouter>
+    <FunBackground />
+      <WhatsAppChat />
       <MyContext.Provider value={values}>
         {isHeaderFooterShow && <Header />}
         

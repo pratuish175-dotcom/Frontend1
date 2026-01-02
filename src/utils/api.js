@@ -212,6 +212,13 @@ export const getProducts = async (path = "/api/products") => {
     return [];
   }
 };
+  export const searchProducts = async (query) => {
+  const res = await fetch(
+    `${process.env.REACT_APP_API_BASE_URL}/api/products/search?q=${query}`
+  );
+  return res.json();
+};
+
 // ✅ Fetch all featured products
 export const getFeaturedProducts = async () => {
   try {
@@ -348,17 +355,22 @@ export const getCartItems = async () => {
   }
 };
 export const createCart = async (cartData) => {
-  const res = await fetch("http://localhost:8080/api/cart/add", {
+  const res = await fetch(`${BASE_URL}/api/cart/add`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(cartData)
+    body: JSON.stringify(cartData),
+    credentials: "include", // ✅ safe for auth/cookies (optional but recommended)
   });
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Failed to add to cart");
+    let errorMessage = "Failed to add to cart";
+    try {
+      const error = await res.json();
+      errorMessage = error.message || errorMessage;
+    } catch (_) {}
+    throw new Error(errorMessage);
   }
 
   return res.json();

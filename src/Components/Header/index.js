@@ -46,7 +46,7 @@ const Header = () => {
       <div className="top-strip bg-purple">
         <div className="container">
           <p className="mb-0 mt-0 text-center">
-            Due to the <b>COVID 19</b> epidemic, orders may be processed with a slight delay
+            Buy More <b>SAVE MORE</b> COMBO SUPER SAVER
           </p>
         </div>
       </div>
