@@ -355,23 +355,24 @@ export const getCartItems = async () => {
   }
 };
 export const createCart = async (cartData) => {
-  const res = await fetch(
-    `${process.env.REACT_APP_API_BASE_URL}/api/cart/add`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(cartData),
-    }
-  );
+  const res = await fetch(`${BASE_URL}/api/cart/add`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(cartData),
+  });
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Failed to add to cart");
+    let message = "Failed to add to cart";
+    try {
+      const error = await res.json();
+      message = error.message || message;
+    } catch (e) {}
+    throw new Error(message);
   }
 
-  return res.json();
+  return await res.json();
 };
 
 
@@ -380,7 +381,7 @@ export const createCart = async (cartData) => {
 
 // Update the quantity of a cart item
 export const updateCartItem = async (cartId, quantity, price) => {
-  const response = await fetch(`http://localhost:8080/api/cart/update/${cartId}`, {
+  const response = await fetch(`${BASE_URL}/api/cart/update/${cartId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -394,6 +395,7 @@ export const updateCartItem = async (cartId, quantity, price) => {
 
   return await response.json();
 };
+
 
 
 
