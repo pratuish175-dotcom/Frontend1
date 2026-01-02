@@ -83,45 +83,50 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id, userId]);
 
-  const handleAddToCart = async () => {
-  const localUserId = localStorage.getItem("userId"); // Always trust storage
-
+ const handleAddToCart = async () => {
+  const localUserId = localStorage.getItem("userId");
   if (!localUserId) {
     setCartError("⚠ Please login first!");
     return;
   }
 
   try {
-    const firstImage =
-      product.images[0].startsWith("http")
-        ? product.images[0]
-        : `${BackendURL}${product.images[0].startsWith("/") ? "" : "/"}${product.images[0]}`;
+    const firstImage = product.images[0];
 
-    const cartDataToAdd = {
-      productTitle: product.name,
-      images: [firstImage],
-      rating: product.rating,
-      price: product.price,
-      quantity,
-      subtotal: product.price * quantity,
-      productId: product._id,
-      userId: localUserId,
-      color: activeColor !== null ? product.productColor[activeColor]?.name : null,
-      selectedColorHex: activeColor !== null ? product.productColor[activeColor]?.hexCode : null,
+// ✅ ALWAYS store RELATIVE PATH in DB
+const imagePath = firstImage.startsWith("/uploads")
+  ? firstImage
+  : `/uploads/${firstImage}`;
+
+const cartDataToAdd = {
+  productTitle: product.name,
+  images: [imagePath], // ✅ FIX
+  rating: product.rating,
+  price: product.price,
+  quantity,
+  subtotal: product.price * quantity,
+  productId: product._id,
+  userId: localUserId,
+
+
+      color: activeColor !== null ? product.productColor?.[activeColor]?.name : null,
+      selectedColorHex: activeColor !== null ? product.productColor?.[activeColor]?.hexCode : null,
     };
 
     await createCart(cartDataToAdd);
 
-    // 🟢 Force update UI cart count
-    context.setCartData(prev => [...prev, cartDataToAdd]);
+    toast.success("🛒 Added to Cart!", { autoClose: 1000 });
 
+    // Update UI instantly
+    context.setCartData(prev => [...prev, cartDataToAdd]);
     setCartError("");
-    toast.success("🛒 Added to cart!", { autoClose: 1200 });
+
   } catch (error) {
     console.error("Add Cart Error:", error);
     toast.error("Failed to add to cart!");
   }
 };
+
 
 
   const handleReviewSubmit = async () => {
