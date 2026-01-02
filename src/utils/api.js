@@ -355,26 +355,25 @@ export const getCartItems = async () => {
   }
 };
 export const createCart = async (cartData) => {
-  const res = await fetch(`${BASE_URL}/api/cart/add`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(cartData),
-    credentials: "include", // ✅ safe for auth/cookies (optional but recommended)
-  });
+  const res = await fetch(
+    `${process.env.REACT_APP_API_BASE_URL}/api/cart/add`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartData),
+    }
+  );
 
   if (!res.ok) {
-    let errorMessage = "Failed to add to cart";
-    try {
-      const error = await res.json();
-      errorMessage = error.message || errorMessage;
-    } catch (_) {}
-    throw new Error(errorMessage);
+    const error = await res.json();
+    throw new Error(error.message || "Failed to add to cart");
   }
 
   return res.json();
 };
+
 
 
 
