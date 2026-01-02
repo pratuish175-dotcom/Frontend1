@@ -13,7 +13,8 @@ const Cart = () => {
   const [error, setError] = useState("");
   const [total, setTotal] = useState(0);
   const [updatingItemId, setUpdatingItemId] = useState(null);
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const navigate = useNavigate();
 
   useEffect(() => {
