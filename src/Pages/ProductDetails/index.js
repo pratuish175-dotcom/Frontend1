@@ -84,18 +84,14 @@ const ProductDetails = () => {
   }, [id, userId]);
 
 const handleAddToCart = async () => {
- // 🔍 DEBUG HERE
-  console.log({
-    contextUser: context.currentUser,
-    localUserId: localStorage.getItem("userId"),
-  });
+  console.log("ADD TO CART USER CHECK:", {
+  contextUser: context.currentUser,
+  storedUserId: localStorage.getItem("userId"),
+});
+
 
   // ✅ VALIDATION
-  if (
-    !userId ||
-    userId === "undefined" ||
-    userId.length !== 24
-  ) {
+  if (!userId || userId === "undefined" || userId.length !== 24) {
     toast.error("Please login to add items to cart");
     return;
   }
@@ -103,7 +99,7 @@ const handleAddToCart = async () => {
   try {
     const firstImage = product.images[0];
 
-    // ✅ ALWAYS store RELATIVE PATH in DB
+    // ✅ ALWAYS STORE RELATIVE PATH
     const imagePath = firstImage.startsWith("/uploads")
       ? firstImage
       : `/uploads/${firstImage}`;
@@ -116,13 +112,12 @@ const handleAddToCart = async () => {
       quantity,
       subtotal: product.price * quantity,
       productId: product._id,
-      userId: userId, // ✅ FIXED HERE
+      userId: userId, // ✅ FIXED (IMPORTANT)
 
       color:
         activeColor !== null
           ? product.productColor?.[activeColor]?.name
           : null,
-
       selectedColorHex:
         activeColor !== null
           ? product.productColor?.[activeColor]?.hexCode
@@ -131,17 +126,16 @@ const handleAddToCart = async () => {
 
     await createCart(cartDataToAdd);
 
-    toast.success("🛒 Added to Cart!", { autoClose: 1000 });
+    toast.success("🛒 Added to Cart!", { autoClose: 1200 });
 
-    // ✅ Update header cart instantly
+    // ✅ Update cart UI
     context.setCartData((prev) => [...prev, cartDataToAdd]);
-
-    setCartError("");
   } catch (error) {
     console.error("Add Cart Error:", error);
-    toast.error("Failed to add to cart!");
+    toast.error("Failed to add to cart");
   }
 };
+
 
 
 
