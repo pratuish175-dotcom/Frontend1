@@ -148,7 +148,7 @@ const Sidebar = ({ filterData, filterByPrice, filterByRating }) => {
         <h6>BRANDS</h6>
         <div className="scroll">
           <ul>
-            {['Leggings','Jeggings'].map((brand, i) => (
+            {['kIDS','lEGGINGS'].map((brand, i) => (
               <li key={i}>
                 <FormControlLabel
                   className="w-100"
@@ -161,7 +161,8 @@ const Sidebar = ({ filterData, filterByPrice, filterByRating }) => {
         </div>
       </div>
 
-     
+      {/* Banner */}
+      
     </div>
   );
 };
