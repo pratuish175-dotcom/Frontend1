@@ -101,7 +101,7 @@ const Listing = () => {
 
           <div className="content_right">
             <img
-              src="https://klbtheme.com/bacola/wp-content/uploads/2021/08/bacola-banner-18.jpg"
+              src="https://gocolors.com/cdn/shop/files/Jan_1_Banner_2_D.jpg?v=1767241771"
               className="w-100"
               style={{ borderRadius: '8px' }}
               alt="Banner"

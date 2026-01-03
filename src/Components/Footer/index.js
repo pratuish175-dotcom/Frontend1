@@ -29,9 +29,6 @@ const Footer = () => {
             <ul className="footer-links">
               <li><Link to="#">Leggings</Link></li>
               <li><Link to="#">Jeggings</Link></li>
-              <li><Link to="#">Sports Wear</Link></li>
-              <li><Link to="#">Tops & Tees</Link></li>
-              <li><Link to="#">Accessories</Link></li>
             </ul>
           </div>
 

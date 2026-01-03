@@ -125,9 +125,9 @@ const showDiscountBadge = discount > 0;
         />
 
         <div className="d-flex">
-          <span className="oldPrice">${props.item?.oldPrice || "00.00"}</span>
+          <span className="oldPrice">Rs{props.item?.oldPrice || "00.00"}</span>
           <span className="netPrice text-danger ml-2">
-            ${props.item?.price || "00.00"}
+            Rs{props.item?.price || "00.00"}
           </span>
         </div>
       </div>
