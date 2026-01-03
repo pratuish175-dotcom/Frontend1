@@ -148,7 +148,7 @@ const Sidebar = ({ filterData, filterByPrice, filterByRating }) => {
         <h6>BRANDS</h6>
         <div className="scroll">
           <ul>
-            {['Furo', 'Adidas', 'Reebok', 'Nike', 'Puma'].map((brand, i) => (
+            {['Leggings','Jeggings'].map((brand, i) => (
               <li key={i}>
                 <FormControlLabel
                   className="w-100"
@@ -161,14 +161,7 @@ const Sidebar = ({ filterData, filterByPrice, filterByRating }) => {
         </div>
       </div>
 
-      {/* Banner */}
-      <Link to="#">
-        <img
-          src="https://klbtheme.com/bacola/wp-content/uploads/2021/05/sidebar-banner.gif"
-          className="w-100"
-          alt="Sidebar Banner"
-        />
-      </Link>
+     
     </div>
   );
 };
