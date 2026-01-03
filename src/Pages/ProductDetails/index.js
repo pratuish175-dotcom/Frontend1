@@ -84,9 +84,11 @@ const ProductDetails = () => {
   }, [id, userId]);
 
 const handleAddToCart = async () => {
-  const userId =
-    context.currentUser?._id ||
-    localStorage.getItem("userId");
+ // 🔍 DEBUG HERE
+  console.log({
+    contextUser: context.currentUser,
+    localUserId: localStorage.getItem("userId"),
+  });
 
   // ✅ VALIDATION
   if (
