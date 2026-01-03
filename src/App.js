@@ -203,7 +203,7 @@ function App() {
           />
         )}
 
-        {isHeaderFooterShow && <Footer />}
+        
         <ToastContainer position="top-right" />
       </MyContext.Provider>
     </BrowserRouter>
