@@ -32,55 +32,45 @@ const ProductModal = ({ data: product, closeProductModal }) => {
   const weights = choices(product.productWeight);
 
    const handleAddToCart = async () => {
-  const userId =
-    context.currentUser?._id ||
-    localStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
-  // ✅ VALIDATION
-  if (
-    !userId ||
-    userId === "undefined" ||
-    userId.length !== 24
-  ) {
+  // ✅ STRONG VALIDATION
+  if (!userId || userId === "undefined" || userId.length !== 24) {
     toast.error("Please login to add items to cart");
     return;
   }
 
-  // 👉 continue add-to-cart logic here
+  try {
+    const firstImage = product.images[0];
 
+    // ✅ ALWAYS STORE RELATIVE PATH
+    const imagePath = firstImage.startsWith("/uploads")
+      ? firstImage
+      : `/uploads/${firstImage}`;
 
-
-    const cartData = {
+    const cartDataToAdd = {
       productTitle: product.name,
-      images: [product.images?.[0]],
+      images: [imagePath],
       rating: product.rating,
       price: product.price,
       quantity,
       subtotal: product.price * quantity,
       productId: product._id,
-      userId,
-      ram: rams[activeRam] || "",
-      size: sizes[activeSize] || "",
-      weight: weights[activeWeight] || "",
+      userId, // ✅ FIXED
     };
 
-    try {
-      await createCart(cartData);
+    await createCart(cartDataToAdd);
 
-      // ✅ UPDATE HEADER CART COUNT
-      context.setCartData((prev) => [...prev, cartData]);
+    toast.success("🛒 Added to cart!");
 
-      // ✅ SUCCESS MESSAGE
-      toast.success("Item added to cart 🛒", {
-        autoClose: 1200,
-      });
+    // Update header cart instantly
+    context.setCartData(prev => [...prev, cartDataToAdd]);
 
-      closeProductModal();
-    } catch (err) {
-      console.error(err);
-      setCartError("Failed to add item to cart.");
-    }
-  };
+  } catch (error) {
+    console.error("Add to cart error:", error);
+    toast.error("Failed to add to cart");
+  }
+};
 
   return (
     <Dialog open onClose={closeProductModal} className="productModal">
