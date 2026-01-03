@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
   const context = useContext(MyContext);
@@ -14,61 +14,69 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
+  const API_URL = process.env.REACT_APP_API_BASE_URL;
+
+  // Hide header/footer on sign in page
   useEffect(() => {
     context.setisHeaderFooterShow(false);
-    // cleanup: show header/footer again on unmount
     return () => context.setisHeaderFooterShow(true);
   }, [context]);
 
-  const API_URL = process.env.REACT_APP_API_BASE_URL;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+    let validationErrors = {};
+    if (!email) validationErrors.email = "Email is required";
+    if (!password) validationErrors.password = "Password is required";
+    setErrors(validationErrors);
 
-  let validationErrors = {};
-  if (!email) validationErrors.email = "Email is required";
-  if (!password) validationErrors.password = "Password is required";
+    if (Object.keys(validationErrors).length > 0) return;
 
-  setErrors(validationErrors);
-
-  if (Object.keys(validationErrors).length === 0) {
     try {
       const response = await fetch(`${API_URL}/api/user/signin`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        return alert(data.message || "Login failed");
+        toast.error(data.message || "Login failed");
+        return;
       }
 
-      // Save user data
+      // ✅ SAVE TO LOCAL STORAGE
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("username", data.user.name);
       localStorage.setItem("userId", data.user._id);
 
+      // ✅ UPDATE CONTEXT (IMPORTANT)
       context.setIsLogin(true);
       context.setUsername(data.user.name);
-      context.setisHeaderFooterShow(true);
+      context.setUserId(data.user._id);
+      context.setCurrentUser({
+        _id: data.user._id,
+        name: data.user.name,
+        email: data.user.email,
+      });
+
+      toast.success("Login successful 🎉");
 
       navigate("/");
     } catch (err) {
       console.error("Login error:", err);
-      alert("Network error. Check backend server.");
+      toast.error("Network error. Please try again.");
     }
-  }
-};
+  };
 
   return (
     <section className="signInPage">
       <div className="signInBox">
         <h2 className="text-center">Sign In</h2>
+
         <form onSubmit={handleSubmit}>
+          {/* EMAIL */}
           <div className="inputGroup">
             <FaUser className="icon" />
             <input
@@ -80,6 +88,7 @@ const handleSubmit = async (e) => {
           </div>
           {errors.email && <p className="error">{errors.email}</p>}
 
+          {/* PASSWORD */}
           <div className="inputGroup">
             <FaLock className="icon" />
             <input
@@ -97,6 +106,7 @@ const handleSubmit = async (e) => {
             <Button type="submit" variant="contained" color="primary">
               SIGN IN
             </Button>
+
             <Link to="/">
               <Button variant="outlined">Cancel</Button>
             </Link>
@@ -107,6 +117,7 @@ const handleSubmit = async (e) => {
           </p>
         </form>
 
+        {/* SOCIAL LOGIN UI */}
         <p className="socialText">Or Continue with</p>
         <div className="socialIcons">
           <button className="googleLogin">
