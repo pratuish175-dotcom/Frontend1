@@ -13,9 +13,9 @@ const Footer = () => {
 
           <div className="col-lg-3 col-md-6">
             <h4 className="footer-title">Contact Us</h4>
-            <p className="footer-text">📞 +91 9915074434</p>
-            <p className="footer-text">✉ support@fashionstore.com</p>
-            <p className="footer-text">📍 Himachal, India</p>
+            <p className="footer-text">📞 +919059324396</p>
+            <p className="footer-text">✉yakshigroup@gmail.com.com</p>
+            <p className="footer-text">📍 Andra Pradesh, India</p>
 
             <div className="footer-social-icons mt-3">
               <a href="#"><FaFacebookF /></a>

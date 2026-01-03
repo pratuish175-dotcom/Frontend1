@@ -1,18 +1,23 @@
+/* =========================
+   BASE BACKGROUND
+========================= */
 .fun-bg {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;                 /* IMPORTANT: must NOT be -1 */
   pointer-events: none;
   overflow: hidden;
   background: linear-gradient(180deg, #fff5f7, #f0f9ff);
 }
 
-/* 🎈 Balloons */
+/* =========================
+   BALLOONS 🎈
+========================= */
 .balloon {
   position: absolute;
-  bottom: -120px;
-  width: 50px;
-  height: 65px;
+  bottom: -100px;
+  width: 35px;
+  height: 45px;
   border-radius: 50% 50% 45% 45%;
   opacity: 0.6;
   animation: floatUp linear infinite;
@@ -21,48 +26,73 @@
 .balloon::after {
   content: "";
   position: absolute;
-  bottom: -15px;
+  bottom: -12px;
   left: 50%;
-  width: 2px;
-  height: 20px;
+  transform: translateX(-50%);
+  width: 1.5px;
+  height: 16px;
   background: rgba(0,0,0,0.1);
 }
 
-.balloon-0 { left: 10%; background: #ffb6c1; animation-duration: 18s; }
-.balloon-1 { left: 25%; background: #ffd6a5; animation-duration: 22s; }
-.balloon-2 { left: 40%; background: #cdb4db; animation-duration: 20s; }
+/* Balloon positions & colors */
+.balloon-0 { left: 8%;  background: #ffb6c1; animation-duration: 18s; }
+.balloon-1 { left: 22%; background: #ffd6a5; animation-duration: 22s; }
+.balloon-2 { left: 38%; background: #cdb4db; animation-duration: 20s; }
 .balloon-3 { left: 55%; background: #bde0fe; animation-duration: 25s; }
-.balloon-4 { left: 70%; background: #ffc8dd; animation-duration: 19s; }
-.balloon-5 { left: 85%; background: #ffafcc; animation-duration: 23s; }
-.balloon-6 { left: 15%; background: #a0c4ff; animation-duration: 21s; }
-.balloon-7 { left: 90%; background: #fdffb6; animation-duration: 24s; }
+.balloon-4 { left: 72%; background: #ffc8dd; animation-duration: 19s; }
+.balloon-5 { left: 88%; background: #a0c4ff; animation-duration: 23s; }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0);
-  }
   to {
     transform: translateY(-130vh);
   }
 }
 
-/* ⭐ Stars */
-.stars {
+/* =========================
+   STARS ⭐
+========================= */
+.star {
   position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(#ffffff 1px, transparent 1px),
-    radial-gradient(#ffd700 1px, transparent 1px);
-  background-size: 80px 80px, 120px 120px;
-  opacity: 0.25;
-  animation: sparkle 30s linear infinite;
+  width: 10px;
+  height: 10px;
+  fill: #ffd700;
+  filter: drop-shadow(0 0 4px rgba(255,215,0,0.7));
+  animation: twinkle 2.5s infinite ease-in-out;
 }
 
-@keyframes sparkle {
-  from {
-    background-position: 0 0, 0 0;
-  }
+
+
+/* =========================
+   RIBBONS 🎀
+========================= */
+.ribbon {
+  position: absolute;
+  top: -80px;
+  width: 6px;
+  height: 60px;
+  border-radius: 10px;
+  opacity: 0.4;
+  animation: ribbonFall linear infinite;
+}
+
+.ribbon-0 { left: 15%; background: #ffafcc; animation-duration: 20s; }
+.ribbon-1 { left: 35%; background: #bde0fe; animation-duration: 24s; }
+.ribbon-2 { left: 60%; background: #ffd6a5; animation-duration: 22s; }
+.ribbon-3 { left: 80%; background: #cdb4db; animation-duration: 26s; }
+
+@keyframes ribbonFall {
   to {
-    background-position: 400px 600px, 600px 400px;
+    transform: translateY(120vh) rotate(360deg);
   }
 }
+
+/* =========================
+   ENSURE CONTENT ABOVE BG
+========================= */
+#root,
+.app,
+main {
+  position: relative;
+  z-index: 1;
+}
+
