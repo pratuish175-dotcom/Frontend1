@@ -1691,3 +1691,11 @@ h6 {
     display: none;
   }
 }
+.signInPage,
+.signUpPage {
+  position: relative;
+  z-index: 5;
+}
+.signInBox {
+  background: #ffffff;
+}

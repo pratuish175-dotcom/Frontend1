@@ -13,7 +13,7 @@ import Footer from "./Components/Footer";
 import Listing from "./Pages/Listing";
 import ProductDetails from "./Pages/ProductDetails";
 import Cart from "./Pages/Cart";
-import SignIn from "./Pages/SignIn";
+import SignIn from "./Pages/SignIn"
 import SignUp from "./Pages/SignUp";
 import EmptyCart from "./Pages/EmptyCart";
 import Checkout from "./Pages/Checkout";
